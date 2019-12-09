@@ -25,8 +25,6 @@ def generate_name():
 def hash(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
-
-
 def fill_database():
     connection = pymysql.connect(
         host='localhost',
@@ -189,17 +187,6 @@ def fill_database():
                 print(query)
                 cursor.execute(query)
                 connection.commit()
-
-
-
-    
-
-
-        
-    
-
-
-
 
 
 if __name__=="__main__":

@@ -13,6 +13,8 @@ services:
         volumes:
             - mysql-data:/var/lib/mysql
             - ./db-init:/docker-entrypoint-initdb.d
+        networks:
+            - backend
         ports:
             - 3306:3306
 
@@ -26,8 +28,23 @@ services:
             PMA_PORT: 3306
             PMA_ARBITRARY: 1
         restart: always
+        networks:
+            - backend
         ports:
             - 8183:80
+    
+    app:
+        build: .
+        container_name: flask_app
+        volumes:
+            - ./:/app
+        networks:
+            - backend
+        ports:
+            - 5000:5000
 
 volumes:
     mysql-data:
+
+networks:
+    backend:
