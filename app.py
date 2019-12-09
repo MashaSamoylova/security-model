@@ -132,7 +132,7 @@ def login():
             session['role'] = DELIVERY_BOY_ROLE
             return f'Hello, {account["login"]}! You are delivery boy!'
         
-        return "blya"
+        return "-_0_0_-"
 
 
 
