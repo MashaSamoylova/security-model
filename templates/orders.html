@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>Orders</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    </head>
+    <body>
+    <div class="container">
+        <h2>List of orders:</h2>
+    {% for order in result %}
+        <b>Id:</b> {{ order.get("id") }}<br>
+        <b>Delivery boy name:</b> {{ order.get("delivery_boy_login") }}<br>
+        <b>Payment login:</b> {{  order.get("payment_by_login") }}<br>
+        <b>Client name:</b> {{ order.get("client_name") }}<br>
+        <b>Delivery Address:</b> {{ order.get("delivery_address") }}<br>
+        <b>Mobile number:</b> {{ order.get("mobile_number") }}<br>
+        <b>Date and time:</b> {{ order.get("date_time") }}<br>
+        <b>Payment status:</b> {{ order.get("payment_status") }}<br>
+        <b>Delivery status:</b> {{ order.get("delivery_status") }}<br>
+        <hr>
+    {% endfor %}
+    </div>
+    </body>
+</html>

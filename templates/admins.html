@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <title>Administrators</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    </head>
+    <body>
+    <div class="container">
+        <h2>List of administrators:</h2>
+    {% for admin in result %}
+        <li>Administrator <b>"{{ admin.get("login") }}"</b> with sha256 password <b>"{{ admin.get("password") }}"</b></li>
+    {% endfor %}
+    </div>
+    </body>
+</html>

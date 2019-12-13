@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Browse</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    </head>
+    <body>
+    <div class="container">
+        <h2>List of items to browse:</h2>
+    {% for browse_item in result %}
+        <b>Id:</b> {{ browse_item.get("id") }}<br>
+        <b>Client login:</b> {{ browse_item.get("client_login") }}<br>
+        <b>Product id:</b> {{ browse_item.get("product_id") }}<br>
+        <hr>
+    {% endfor %}
+    </div>
+    </body>
+</html>

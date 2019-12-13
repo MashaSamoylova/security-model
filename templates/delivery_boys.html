@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>Delivery Boys</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    </head>
+    <body>
+    <div class="container">
+        <h2>List of delivery boys:</h2>
+    {% for delivery_boy in result %}
+        <b>Login:</b> {{ delivery_boy.get("login") }}<br>
+        <b>Password:</b> {{ delivery_boy.get("password") }}<br>
+        <b>transport:</b> {{ delivery_boy.get("transport") }}<br>
+        <hr>
+    {% endfor %}
+    </div>
+    </body>
+</html>

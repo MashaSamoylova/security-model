@@ -31,6 +31,7 @@ class AppDefaultBinding:
 
 class AppDefaultKeywords:
     FORBIDDEN_WARN = "FORBIDDEN!!"
+    WRONG_USER_PASS_WARN = "Sorry, your password or username is incorrect."
 
 
 def hash_str(password: str) -> str:
@@ -40,19 +41,19 @@ def hash_str(password: str) -> str:
 @app.route("/admins/", methods=["GET"])
 def get_admins() -> str or any:
     if session.get("role", "0") != AppDefaultRoles.ADMIN_ROLE:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM admins")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("admins.html", result=cursor.fetchall())
 
 
 @app.route("/clients/", methods=["GET"])
 def get_clients() -> str or any:
     if session.get("role", "0") != AppDefaultRoles.ADMIN_ROLE:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM clients")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("clients.html", result=cursor.fetchall())
 
 
 @app.route("/orders/", methods=["GET"])
@@ -61,19 +62,19 @@ def get_orders() -> str or any:
         AppDefaultRoles.ADMIN_ROLE,
         AppDefaultRoles.DELIVERY_BOY_ROLE,
     ]:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM orders")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("orders.html", result=cursor.fetchall())
 
 
 @app.route("/delivery_boys/", methods=["GET"])
 def get_delivery_boys() -> str or any:
     if session.get("role", "0") not in [AppDefaultRoles.ADMIN_ROLE]:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM delivery_boys")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("delivery_boys.html", result=cursor.fetchall())
 
 
 @app.route("/products/", methods=["GET"])
@@ -83,10 +84,10 @@ def get_products() -> str or any:
         AppDefaultRoles.CLIENT_ROLE,
         AppDefaultRoles.DELIVERY_BOY_ROLE,
     ]:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM products")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("products.html", result=cursor.fetchall())
 
 
 @app.route("/reviews/", methods=["GET"])
@@ -96,10 +97,10 @@ def get_reviews() -> str or any:
         AppDefaultRoles.DELIVERY_BOY_ROLE,
         AppDefaultRoles.CLIENT_ROLE,
     ]:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
-    cursor.execute("SELECT * FROM reviews")
-    return render_template("table.html", result=cursor.fetchall())
+    cursor.execute("SELECT * FROM rewiews")
+    return render_template("reviews.html", result=cursor.fetchall())
 
 
 @app.route("/contain/", methods=["GET"])
@@ -108,10 +109,10 @@ def get_contain() -> str or any:
         AppDefaultRoles.ADMIN_ROLE,
         AppDefaultRoles.DELIVERY_BOY_ROLE,
     ]:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM contain")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("contain.html", result=cursor.fetchall())
 
 
 @app.route("/browse/", methods=["GET"])
@@ -120,10 +121,10 @@ def get_browse() -> str or any:
         AppDefaultRoles.ADMIN_ROLE,
         AppDefaultRoles.DELIVERY_BOY_ROLE,
     ]:
-        return AppDefaultKeywords.FORBIDDEN_WARN
+        return render_template("error.html", msg=AppDefaultKeywords.FORBIDDEN_WARN)
     cursor = mysql.connection.cursor(mysql_dict_cursor)
     cursor.execute("SELECT * FROM browse")
-    return render_template("table.html", result=cursor.fetchall())
+    return render_template("browse.html", result=cursor.fetchall())
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -149,7 +150,7 @@ def login() -> str or any:
             session["loggedin"] = True
             session["username"] = account["login"]
             session["role"] = AppDefaultRoles.ADMIN_ROLE
-            return f'Hello, {account["login"]}! You are admin!'
+            return render_template("error.html", msg=f'Hello, {account["login"]}! You are admin!')
 
         cursor.execute(
             "SELECT * FROM clients WHERE login = %s AND password = %s",
@@ -160,7 +161,7 @@ def login() -> str or any:
             session["loggedin"] = True
             session["username"] = account["login"]
             session["role"] = AppDefaultRoles.CLIENT_ROLE
-            return f'Hello, {account["login"]}! You are client!'
+            return render_template("error.html", msg=f'Hello, {account["login"]}! You are client!')
 
         cursor.execute(
             "SELECT * FROM delivery_boys WHERE login = %s AND password = %s",
@@ -171,10 +172,9 @@ def login() -> str or any:
         if account:
             session["loggedin"] = True
             session["username"] = account["login"]
-            session["role"] = AppDefaultRoles.DELIVERY_BOY_ROLE
-            return f'Hello, {account["login"]}! You are delivery boy!'
+            return render_template("error.html", msg=f'Hello, {account["login"]}! You are delivery boy!')
 
-        return "-_0_0_-"
+        return render_template("error.html", msg=AppDefaultKeywords.WRONG_USER_PASS_WARN)
 
 
 if __name__ == "__main__":
