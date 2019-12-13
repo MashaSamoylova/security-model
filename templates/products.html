@@ -3,6 +3,14 @@
         <title>Products</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+        <style>
+        body {
+          background-image: url("{{ url_for('static', filename='pizza_back.jpg') }}");
+        }
+        .container {
+          background-color:rgba(255,255,255,0.8);
+        }
+        </style>
     </head>
     <body>
     <div class="container">
