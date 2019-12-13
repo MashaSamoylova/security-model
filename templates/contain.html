@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <title>Contains</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet" media="screen">
+        <style>
+        body {
+          background-image: url("{{ url_for('static', filename='pizza_back.jpg') }}");
+        }
+        .container {
+          background-color:rgba(255,255,255,0.8);
+        }
+        </style>
+    </head>
+    <body>
+    <div class="container">
+        <h2>List of containers:</h2>
+    {% for container in result %}
+        <b>Id:</b> {{ container.get("id") }}<br>
+        <b>Id of order:</b> {{ container.get("order_id") }}<br>
+        <b>Id of product:</b> {{ container.get("product_id") }}<br>
+        <b>Quantity:</b> {{ container.get("quantity") }}<br>
+        <hr>
+    {% endfor %}
+    </div>
+    </body>
+</html>
